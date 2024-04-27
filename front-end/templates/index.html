@@ -1,0 +1,17 @@
+{% extends 'base.html' %} 
+
+{% block container %}
+    <h1>My Tasks &#128203;</h1>
+    {% for task in tasks %}
+            <div class = input-container>
+              <p class="styled-input">Title: {{ task.title }}</p>
+              <p class="styled-input">Course: {{ task.course }}</p>
+              <p class="styled-input">Due Date: {{ task.date }}</p>
+
+              <div class="button-group">
+                <a href="{{url_for('edit', task_id=task._id, user_id=user._id)}}"><button class="button">Edit</button></a>
+                <a href="{{url_for('delete', task_id=task._id, user_id=user._id)}}"><button class="button">Delete</button></a>
+              </div>
+            </div>
+    {% endfor %}
+{% endblock %}
