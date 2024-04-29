@@ -1,0 +1,151 @@
+.container {
+  border: 2px solid;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: beige;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  gap: 10em; 
+  justify-content: space-between; 
+  align-items: center; 
+  font-weight: bold;
+}
+
+header,footer,main {
+  padding: 2rem;
+}
+
+header, main {
+  border-bottom: 2px solid;
+  margin-bottom: 5px;
+}
+
+section.posts {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+article.post {
+  border: 1px solid black;
+  padding: 1rem;
+}
+article.post.new-post {
+  background-color: #f0f0f0;
+}
+article.post .controls {
+  font-size: 12px;
+}
+article.post .author {
+  font-size: 12px;
+}
+article.post p.message {
+  font-size: 24px;
+}
+
+footer {
+  margin-bottom: 5px;
+}
+
+.styled-input {
+  font-weight: bold;
+  font-size: larger;
+  margin: 5px;
+}
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  font-weight: bold;
+  color: saddlebrown;
+
+ 
+}
+h2 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2em;
+  padding: 1em;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.5em 1em;
+  background-color: lightgray; 
+  color: black; 
+  border: 1px light grey; 
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.task-container {
+ border: 1px black; 
+ padding: 1em; 
+ margin-bottom: 1em; 
+ align-items: center; 
+ display: flex;
+ flex-direction: column;
+}
+
+
+
+.task-details {
+ flex: 1; 
+ padding: 1em; 
+}
+
+.search-container {
+ text-align: center;
+}
+
+.search-container input[type="text"] {
+ width: 25em; 
+ padding: 0.5em; 
+ font-size: 1em; 
+ margin-bottom: 1em; 
+ margin-right: 1em; 
+}
+
+.search-container input[type="submit"] {
+ padding: 0.7em 1.4em; 
+ font-size: 1em; 
+}
+
+.add-input {
+  margin-bottom: 15px;
+  font-size: 1em;
+  border: 1px light grey;  
+  border-radius: 10px; 
+  padding: 0.5em;
+ 
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.delete-task{
+  font-size: 1.5em;
+  margin: 15px;
+  line-height: 2;
+}
+
+
+.button-group {
+  display: inline-block;
+  
+  
+}
+
+.li{
+  list-style-type: circle;
+  
+}

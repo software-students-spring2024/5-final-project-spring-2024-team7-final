@@ -1,0 +1,25 @@
+{% extends 'base.html' %} 
+
+{% block container %}
+    <h1>Tasks for {{course_name}} &#128203;</h1>
+    {% if tasks %}
+        <ul class="task-list">
+        {% for task in tasks %}
+            <li class = "list">
+                <div class="task-container">
+                    <p class="styled-input">Title: {{ task.title }}</p>
+                    <p class="styled-input">Course: {{ task.course }}</p>
+                    <p class="styled-input">Due Date: {{ task.date }}</p>
+                    <!-- <p class="styled-input">Task ID: {{ task._id }}</p> -->
+                    <div class="button-group">
+                        <a href="{{url_for('edit', task_id=task._id, user_id=user._id)}}"><button class="button">Edit</button></a>
+                        <a href="{{url_for('delete', task_id=task._id, user_id=user._id)}}"><button class="button">Delete</button></a>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+    <p class="styled-input">No tasks found for "{{ course_name }}"</p>
+    {% endif %}
+{% endblock %}

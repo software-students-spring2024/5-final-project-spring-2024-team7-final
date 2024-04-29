@@ -1,0 +1,20 @@
+{% extends 'base.html' %} 
+
+{% block container %}
+<h1>Edit Task</h1>
+<form method="POST" action="{{ url_for('edit_task', task_id=task._id, user_id=user._id)}}"> 
+    <div class="input-container">
+    <label for="username" class = "styled-input">Task title: </label>
+    <input type="text" id="title" name="title" value="{{title}}" placeholder="Task title" class="add-input"/>
+    <br />
+    <label for="username" class = "styled-input">Course: </label>
+    <input type="text" id="course" name="course" value="{{course}}" placeholder="Course" class="add-input"/>
+    <br />
+    <label for="username" class = "styled-input">Date: </label>
+    <input type="date" id="date" name="date" value="{{date}}" placeholder="Date" class="add-input"/>
+    <br />
+    <input type="submit" value="Save" class = "button" />
+</div>
+</form>
+<!-- <p>{{task}}</p> -->
+{% endblock %}

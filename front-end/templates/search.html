@@ -1,0 +1,11 @@
+{% extends 'base.html' %} 
+
+{% block container %}
+<h1>Search Tasks &#x1F50D;</h1>
+<section class="search-container">
+<form method="POST" action="{{ url_for('search_tasks')}}"> 
+    <input type="text" id="course" name="course" placeholder="Please Enter a Course">
+    <input type="submit" value="Search" class = "button">
+</form>
+</section>
+{% endblock %}
