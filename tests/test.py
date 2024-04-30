@@ -36,9 +36,34 @@ def test_login_page(client):
     assert response.status_code == 200
     assert b"Login" in response.data
 
+def test_login_post(client):
+    response = client.post("/login", data={
+        "username":"hello",
+        "password":"123",
+    })
+    assert response.status_code == 200
+
 def test_register_page(client):
 
     response = client.get("/register")
     assert response.status_code == 200
     assert b"Register" in response.data
+
+
+
+def test_home_page(client):
+
+    # username = "hello"
+    # password = "123"
+    # user = {
+    #         'username': username,
+    #         'password': password,
+    #         'tasks': []
+    #     }
+    # db.test_users.insert_one(user)
+    with app.test_request_context():
+        login_user(User("121212121212121212121212"))
+        response = client.get("/home")
+        assert response.status_code == 200
+        assert b"My Tasks" in response.data
     
