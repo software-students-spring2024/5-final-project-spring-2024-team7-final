@@ -9,17 +9,21 @@
     </form>
     {% for task in tasks %}
             <div class = input-container>
+              {% if (task.date - now).days <= 7 %}
+                <p class="styled-input" style="color: red;">Title: {{ task.title }}</p>
+                <p class="styled-input">Course: {{ task.course }}</p>
+                <p class="styled-input">Due Date: {{ task.date.strftime('%Y-%m-%d') }}</p>
+                {% if (task.date - now).days == 0 %}
+                  <p class="dates" >Due in {{ (task.date - now).days + 1 }} day!!!!</p>
+                {% elif (task.date - now).days < 0 %}
+                  <p class="dates" >Deadline passed!!!!</p>
+                {% else %}
+                  <p class="dates" >Due in {{ (task.date - now).days + 1 }} days!!!!</p>
+                {% endif %}
+              {% else %}
               <p class="styled-input">Title: {{ task.title }}</p>
               <p class="styled-input">Course: {{ task.course }}</p>
               <p class="styled-input">Due Date: {{ task.date.strftime('%Y-%m-%d') }}</p>
-              {% if (task.date - now).days <= 7 %}
-                  {% if (task.date - now).days == 0 %}
-                      <p class="dates" >Due Today</p>
-                  {% elif (task.date - now).days == 1 %}
-                      <p class="dates" >Due Tomorrow</p>
-                  {% else %}
-                      <p class="dates" >Due in {{ (task.date - now).days }} days</p>
-                  {% endif %}
               {% endif %}
            
 
