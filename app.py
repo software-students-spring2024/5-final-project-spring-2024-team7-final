@@ -5,7 +5,8 @@ import os
 import pymongo
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
-import datetime
+from datetime import datetime
+
 
 load_dotenv()
 
@@ -80,7 +81,18 @@ def home():
     user_id = ObjectId(current_user.id)
     user = db.users.find_one({'_id': user_id})
     tasks = user['tasks']
-    return render_template('index.html', tasks=tasks, user=user)
+    for task in tasks:
+        task['date'] = datetime.strptime(task['date'], '%Y-%m-%d')
+    
+    current_date = datetime.now()
+    if request.method == 'GET':
+
+        sort_by = request.args.get('sort_by')
+        if sort_by:
+            tasks = sorted(tasks, key=lambda x: x.get(sort_by, ''))
+    
+    return render_template('index.html', tasks=tasks, user=user, now = current_date)
+
 
 
 #Add A Task
