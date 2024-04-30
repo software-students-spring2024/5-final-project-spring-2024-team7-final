@@ -159,3 +159,14 @@ h2 {
   color: red;
   margin: 5px;
 }
+
+.task-checkbox {
+  margin-top: 2em;
+  margin-bottom: 1em;
+  transform: scale(1.5);
+}
+
+
+.completed {
+  text-decoration: line-through;
+}

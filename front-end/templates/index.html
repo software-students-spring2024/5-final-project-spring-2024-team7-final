@@ -6,11 +6,16 @@
       <button class="button" type="submit" name="sort_by" value="title">Sort by Title</button>
       <button class="button" type="submit" name="sort_by" value="course">Sort by Course</button>
       <button class="button" type="submit" name="sort_by" value="date">Sort by Due Date</button>
+     
     </form>
     {% for task in tasks %}
-            <div class = input-container>
+            <div class = input-container id="task-{{ task._id }}">
+              <div class="task-checkbox">
+                <input type="checkbox" id="task-{{ task._id }}-checkbox" class="checkbox" name="task-checkbox" {% if task.completed %}checked{% endif %} onchange="updateTaskStatus('{{ task._id }}')">
+                <label for="task-{{ task._id }}-checkbox"></label>
+              </div>
               {% if (task.date - now).days <= 7 %}
-                <p class="styled-input" style="color: red;">Title: {{ task.title }}</p>
+                <label for="task-{{ task._id }}-checkbox" class="styled-input {% if task.completed %}completed{% endif %}" style="color: red;">Title: {{ task.title }}</label>
                 <p class="styled-input">Course: {{ task.course }}</p>
                 <p class="styled-input">Due Date: {{ task.date.strftime('%Y-%m-%d') }}</p>
                 {% if (task.date - now).days == 0 %}
@@ -21,10 +26,11 @@
                   <p class="dates" >Due in {{ (task.date - now).days + 1 }} days!!!!</p>
                 {% endif %}
               {% else %}
-              <p class="styled-input">Title: {{ task.title }}</p>
+              <label for="task-{{ task._id }}-checkbox" class="styled-input {% if task.completed %}completed{% endif %}">Title: {{ task.title }}</label>
               <p class="styled-input">Course: {{ task.course }}</p>
               <p class="styled-input">Due Date: {{ task.date.strftime('%Y-%m-%d') }}</p>
               {% endif %}
+          
            
 
               <div class="button-group">
@@ -32,5 +38,19 @@
                 <a href="{{url_for('delete', task_id=task._id, user_id=user._id)}}"><button class="button">Delete</button></a>
               </div>
             </div>
+            <script>
+              function updateTaskStatus(taskId) {
+                  var checkbox = document.getElementById('task-' + taskId + '-checkbox');
+                  var taskTitle = document.getElementById('task-' + taskId);
+      
+                  if (checkbox.checked) {
+                      taskTitle.classList.add('completed');
+                  } else {
+                      taskTitle.classList.remove('completed');
+                  }
+              }
+            </script>
+
     {% endfor %}
+
 {% endblock %}
