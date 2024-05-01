@@ -30,19 +30,6 @@ def test_reglog_page(client):
     assert response.status_code == 200
     assert b"Welcome Back to School Tasks Manager" in response.data
 
-def test_login_page(client):
-
-    response = client.get("/login")
-    assert response.status_code == 200
-    assert b"Login" in response.data
-
-def test_login_post(client):
-    response = client.post("/login", data={
-        "username":"hello",
-        "password":"123",
-    })
-    assert response.status_code == 302
-
 def test_register_page(client):
 
     response = client.get("/register")
@@ -56,6 +43,19 @@ def test_register_post(client):
     })
     assert response.status_code == 200
 
+def test_login_page(client):
+
+    response = client.get("/login")
+    assert response.status_code == 200
+    assert b"Login" in response.data
+
+def test_login_post(client):
+    response = client.post("/login", data={
+        "username":"hello",
+        "password":"123",
+    })
+    assert response.status_code == 302
+
 def test_home_page(client):
 
     auth = client.post("/login", data={
@@ -66,3 +66,8 @@ def test_home_page(client):
     assert response.status_code == 200
     assert b"My Tasks" in response.data
     
+def test_add_page(client):
+
+    response = client.get("/add")
+    assert response.status_code == 200
+    assert b"Add a Task" in response.data
