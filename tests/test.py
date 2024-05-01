@@ -104,3 +104,26 @@ def test_search_for_task(client):
     })
     assert response.status_code == 200
     assert b"Tasks for" in response.data
+
+def test_edit_task_page(client):
+
+    auth = client.post("/login", data={
+    "username":"hello",
+    "password":"123",
+    })
+    user_id = ObjectId(current_user.id)
+    user = db.users.find_one({'_id': user_id})
+    add = client.post("/add", data={
+        "_id":ObjectId(),
+        "title":"Title",
+        "course":"Course",
+        "date":"01/01/2024"
+    })
+    tasks = user['tasks']
+    print(user_id)
+    task_id = tasks[0]["_id"]
+    print(task_id)
+    response = client.get('/edit/663195631e4255a470b9763e/663195641e4255a470b97640')
+    assert response.status_code == 200
+    assert b"Edit Task" in response.data
+
