@@ -71,3 +71,17 @@ def test_add_page(client):
     response = client.get("/add")
     assert response.status_code == 200
     assert b"Add a Task" in response.data
+
+def test_add_task(client):
+
+    auth = client.post("/login", data={
+    "username":"hello",
+    "password":"123",
+    })
+    response = client.post("/add", data={
+        "_id":ObjectId(),
+        "title":"Title",
+        "course":"Course",
+        "date":"01/01/2024"                    
+    })
+    assert response.status_code == 302
