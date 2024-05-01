@@ -1,6 +1,6 @@
 import pytest
 from app import app as flask_app
-from flask_login import login_user, UserMixin
+from flask_login import login_user, logout_user, current_user, UserMixin
 import mongomock
 from bson.objectid import ObjectId
 
@@ -45,13 +45,19 @@ def user_id():
     return ObjectId()
 
 @pytest.fixture
-def logged_in_user(client, mocker, user_id):
-    user_data = {'_id': user_id, 'username': 'testuser', 'password': 'password', 'tasks': []}
-    mocker.patch('pymongo.collection.Collection.find_one', return_value=user_data)
-    user = TestUser(str(user_id), 'testuser', 'password')
-    with client.application.app_context(): 
+def logged_in_user(client, mocker, app):
+    user_id = str(ObjectId())  # 使用 ObjectId 生成一个新的 ID
+    user = TestUser(user_id, 'testuser', 'password')
+    mocker.patch('pymongo.collection.Collection.find_one', return_value={'_id': user.id, 'username': user.username, 'password': user.password})
+    # 使用测试客户端的请求上下文执行登录
+    with client:
+        with client.session_transaction() as sess:
+            sess['user_id'] = user.id  # 根据您的应用逻辑，这里可能需要调整
         login_user(user, remember=True)
-    return user
+        yield user
+        with client.session_transaction() as sess:
+            sess.pop('user_id', None)
+        logout_user()
 
 @pytest.fixture
 def task_id():
@@ -86,8 +92,7 @@ def test_add_task(client, logged_in_user, mocker):
     mocker.patch('pymongo.collection.Collection.update_one')
     mocker.patch('pymongo.collection.Collection.find_one', return_value={'_id': logged_in_user.id, 'username': 'testuser', 'tasks': []})
     response = client.post('/add', data={'title': 'New Task', 'course': 'Math', 'date': '2024-04-30'}, follow_redirects=True)
-    assert response.status_code == 401 
-
+    assert response.status_code == 200, f"Failed with status {response.status_code}, expected 200"
 
 def test_edit_task(client, logged_in_user, task_id, mocker):
     mocker.patch('pymongo.collection.Collection.update_one')
