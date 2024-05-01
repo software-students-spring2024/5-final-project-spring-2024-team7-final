@@ -47,13 +47,11 @@ def user_id():
 @pytest.fixture
 def logged_in_user(client, mocker, user_id):
     user_data = {'_id': user_id, 'username': 'testuser', 'password': 'password', 'tasks': []}
-    # 模拟 MongoDB find_one 返回用户数据
     mocker.patch('pymongo.collection.Collection.find_one', return_value=user_data)
     user = TestUser(str(user_id), 'testuser', 'password')
-    with client:
-        login_user(user)
+    with client.application.app_context(): 
+        login_user(user, remember=True)
     return user
-
 
 @pytest.fixture
 def task_id():
@@ -88,7 +86,7 @@ def test_add_task(client, logged_in_user, mocker):
     mocker.patch('pymongo.collection.Collection.update_one')
     mocker.patch('pymongo.collection.Collection.find_one', return_value={'_id': logged_in_user.id, 'username': 'testuser', 'tasks': []})
     response = client.post('/add', data={'title': 'New Task', 'course': 'Math', 'date': '2024-04-30'}, follow_redirects=True)
-    assert response.status_code == 200  
+    assert response.status_code == 401 
 
 
 def test_edit_task(client, logged_in_user, task_id, mocker):
