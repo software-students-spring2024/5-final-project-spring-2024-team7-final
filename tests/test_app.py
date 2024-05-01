@@ -46,17 +46,19 @@ def user_id():
 
 @pytest.fixture
 def logged_in_user(client, mocker, app):
-    with app.app_context():  # 确保所有操作都在应用上下文中执行
-        user_id = str(ObjectId())  # 使用 ObjectId 生成一个新的 ID
+    with app.app_context():
+        user_id = str(ObjectId())
         user = TestUser(user_id, 'testuser', 'password')
-        mocker.patch('pymongo.collection.Collection.find_one', return_value={'_id': user.id, 'username': user.username, 'password': user.password})
-        # 使用测试客户端的请求上下文执行登录
+        mocker.patch('pymongo.collection.Collection.find_one', return_value={
+            '_id': user.id, 'username': user.username, 'password': user.password
+        })
         with client:
             with client.session_transaction() as sess:
-                sess['user_id'] = user.id  # 存储用户ID
+                sess['user_id'] = user.id
             login_user(user, remember=True)
             yield user
             logout_user()
+
 
 
 @pytest.fixture
