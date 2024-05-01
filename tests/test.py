@@ -85,3 +85,9 @@ def test_add_task(client):
         "date":"01/01/2024"                    
     })
     assert response.status_code == 302
+
+def test_search_page(client):
+
+    response = client.get("/search")
+    assert response.status_code == 200
+    assert b"Search Tasks" in response.data
