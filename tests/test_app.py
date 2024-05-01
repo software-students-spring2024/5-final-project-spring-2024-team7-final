@@ -1,108 +1,104 @@
 import pytest
-import os
+from app import app as flask_app
+from flask_login import login_user, UserMixin
+import mongomock
+from bson.objectid import ObjectId
 
-from app import *
-from app import app
-from bson import ObjectId
-from datetime import datetime
+class TestUser(UserMixin):
+    def __init__(self, user_id, username, password):
+        self.id = user_id
+        self.username = username
+        self.password = password
+        self.active = True
+
+    @property
+    def is_active(self):
+        return self.active
 
 @pytest.fixture
-def client():
+def app():
+    app = flask_app
     app.config.update({
-        "TESTING" : True,
+        "TESTING": True,
+        "SECRET_KEY": "test_secret",
+        "MONGO_URI": "mongomock://localhost",
+        "MONGO_DBNAME": "mockdb"
     })
-    with app.test_client() as client:
-        yield client
+    return app
 
-def test_sanity_check(client):
+@pytest.fixture
+def client(app):
+    return app.test_client()
 
-    expected = True
-    actual = True
-    assert actual == expected
+@pytest.fixture
+def runner(app):
+    return app.test_cli_runner()
 
-def test_sanity_check2(client):
+@pytest.fixture
+def mock_db(mocker, app):
+    mocker.patch('pymongo.MongoClient', mongomock.MongoClient)
+    db = mongomock.MongoClient()[app.config['MONGO_DBNAME']]
+    return db
 
-    expected = True
-    actual = True
-    assert actual == expected
+@pytest.fixture
+def user_id():
+    return ObjectId()
 
-def test_reglog_page(client):
+@pytest.fixture
+def logged_in_user(client, mocker, user_id):
+    user_data = {'_id': user_id, 'username': 'testuser', 'password': 'password', 'tasks': []}
+    # 模拟 MongoDB find_one 返回用户数据
+    mocker.patch('pymongo.collection.Collection.find_one', return_value=user_data)
+    user = TestUser(str(user_id), 'testuser', 'password')
+    with client:
+        login_user(user)
+    return user
 
-    response = client.get("/")
+
+@pytest.fixture
+def task_id():
+    return ObjectId()
+
+def test_login_success(client, mocker):
+    test_user = {'_id': ObjectId(), 'username': 'test', 'password': 'test'}
+    mocker.patch('pymongo.collection.Collection.find_one', return_value=test_user)
+    response = client.post('/login', data={'username': 'test', 'password': 'test'})
+    assert response.status_code == 302
+    assert '/home' in response.headers['Location']
+
+def test_login_failure(client, mocker):
+    mocker.patch('pymongo.collection.Collection.find_one', return_value=None)
+    response = client.post('/login', data={'username': 'wrong', 'password': 'wrong'})
     assert response.status_code == 200
-    assert b"Welcome Back to School Tasks Manager" in response.data
+    assert b"Incorrect password entered" in response.data
 
-def test_register_page(client):
-
-    response = client.get("/register")
-    assert response.status_code == 200
-    assert b"Register" in response.data
-
-def test_register_post(client):
-    response = client.post("/register", data={
-        "username":"hello",
-        "password":"123",
-    })
-    assert response.status_code == 200
-
-def test_login_page(client):
-
-    response = client.get("/login")
-    assert response.status_code == 200
-    assert b"Login" in response.data
-
-def test_login_post(client):
-    response = client.post("/login", data={
-        "username":"hello",
-        "password":"123",
-    })
+def test_register_new_user(client, mocker):
+    mocker.patch('pymongo.collection.Collection.find_one', return_value=None)
+    mocker.patch('pymongo.collection.Collection.insert_one')
+    response = client.post('/register', data={'username': 'newuser', 'password': 'newpass'})
     assert response.status_code == 302
 
-# def test_home_page(client):
-
-#     auth = client.post("/login", data={
-#     "username":"hello",
-#     "password":"123",
-#     })
-#     response = client.get("/home")
-#     assert response.status_code == 200
-#     assert b"My Tasks" in response.data
-    
-def test_add_page(client):
-
-    response = client.get("/add")
+def test_register_existing_user(client, mocker):
+    mocker.patch('pymongo.collection.Collection.find_one', return_value=True)
+    response = client.post('/register', data={'username': 'existuser', 'password': 'password'})
     assert response.status_code == 200
-    assert b"Add a Task" in response.data
+    assert b"Username already exists!" in response.data
 
-def test_add_task(client):
+def test_add_task(client, logged_in_user, mocker):
+    mocker.patch('pymongo.collection.Collection.update_one')
+    mocker.patch('pymongo.collection.Collection.find_one', return_value={'_id': logged_in_user.id, 'username': 'testuser', 'tasks': []})
+    response = client.post('/add', data={'title': 'New Task', 'course': 'Math', 'date': '2024-04-30'}, follow_redirects=True)
+    assert response.status_code == 200  
 
-    auth = client.post("/login", data={
-    "username":"hello",
-    "password":"123",
-    })
-    response = client.post("/add", data={
-        "_id":ObjectId(),
-        "title":"Title",
-        "course":"Course",
-        "date":"01/01/2024"                    
-    })
+
+def test_edit_task(client, logged_in_user, task_id, mocker):
+    mocker.patch('pymongo.collection.Collection.update_one')
+    response = client.post(f'/edit/{logged_in_user.id}/{task_id}', data={'title': 'Updated Task', 'course': 'Science', 'date': '2024-05-01'})
     assert response.status_code == 302
+    assert '/home' in response.headers['Location']
 
-def test_search_page(client):
-
-    response = client.get("/search")
-    assert response.status_code == 200
-    assert b"Search Tasks" in response.data
-
-def test_search_for_task(client):
-
-    auth = client.post("/login", data={
-    "username":"hello",
-    "password":"123",
-    })
-    response = client.post("/search", data={
-        "_id":ObjectId(),
-        "course":"Course",                   
-    })
-    assert response.status_code == 200
-    assert b"Tasks for" in response.data
+def test_delete_task(client, logged_in_user, task_id, mocker):
+    mocker.patch('pymongo.collection.Collection.update_one')
+    response = client.post(f'/delete/{logged_in_user.id}/{task_id}')
+    assert response.status_code == 302
+    assert '/home' in response.headers['Location']
