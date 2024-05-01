@@ -6,10 +6,7 @@ services:
     ports:
       - "3000:3000"  
     environment:
-     - MONGO_URI= "mongodb://localhost:27017/"
-     - MONGO_DBNAME=user
-     - SECRET_KEY="mysecretkey"
-
+      - MONGO_URI=mongodb://mongo:27017/
     depends_on:
       - mongo
   mongo:

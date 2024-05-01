@@ -12,7 +12,7 @@ load_dotenv()
 
 app = Flask(__name__, template_folder='./front-end/templates', static_folder='./front-end/static')
 
-connection = pymongo.MongoClient(os.getenv("mongodb://mongodb:27017/"))
+connection = pymongo.MongoClient(os.getenv('MONGO_URI'))
 db = connection[os.getenv('MONGO_DBNAME')]
 
 app.secret_key = os.getenv('SECRET_KEY')
@@ -183,7 +183,7 @@ def delete(task_id, user_id):
     date = task['date']
     return render_template('delete.html', title=title, course=course, date=date, task=task, user=user)
 
-@app.route('/delete/<user_id>/<task_id>', method=['POST'])
+@app.route('/delete/<user_id>/<task_id>', methods=['POST'])
 def delete_task(task_id, user_id):
     db.users.update_one(
         {"_id": ObjectId(user_id)},
@@ -193,8 +193,10 @@ def delete_task(task_id, user_id):
         url_for("home")
     )
 
+
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=3000)
-
-
-
