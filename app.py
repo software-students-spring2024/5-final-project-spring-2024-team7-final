@@ -12,8 +12,7 @@ load_dotenv()
 
 app = Flask(__name__, template_folder='./front-end/templates', static_folder='./front-end/static')
 
-#connection = pymongo.MongoClient(os.getenv("mongodb://mongodb:27017/"))
-connection = pymongo.MongoClient("mongodb://admin:your_password@165.227.178.93:27017/")
+connection = pymongo.MongoClient(os.getenv("mongodb://mongodb:27017/"))
 db = connection[os.getenv('MONGO_DBNAME')]
 
 app.secret_key = os.getenv('SECRET_KEY')
