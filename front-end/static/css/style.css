@@ -1,8 +1,6 @@
 .container {
-  border: 2px solid;
-  max-width: 1200px;
-  margin: 0 auto;
   background-color: beige;
+  width: 100%;
 }
 
 header {
@@ -53,8 +51,19 @@ footer {
 
 .styled-input {
   font-weight: bold;
-  font-size: larger;
-  margin: 5px;
+  font-size: 1.2em;
+  margin: 5px auto;
+  text-align: center;
+  
+}
+
+.task-title{
+  font-weight: bold;
+  font-size: 2em;
+  margin-bottom: 30px;
+  text-align: center;
+  font-family: "Comic Sans MS", Comic Sans, cursive;
+  
 }
 
 h1 {
@@ -62,15 +71,11 @@ h1 {
   text-align: center;
   font-weight: bold;
   color: saddlebrown;
-
+  font-family: Chalkduster, fantasy;
  
 }
-h2 {
-  text-align: center;
-  font-weight: bold;
-  font-size: 2em;
-  padding: 1em;
-}
+
+
 
 .button {
   display: inline-block;
@@ -82,23 +87,11 @@ h2 {
   text-decoration: none;
   cursor: pointer;
   font-size: 1em;
-}
-
-.task-container {
- border: 1px black; 
- padding: 1em; 
- margin-bottom: 1em; 
- align-items: center; 
- display: flex;
- flex-direction: column;
+  font-family: "Comic Sans MS", Comic Sans, cursive;
 }
 
 
 
-.task-details {
- flex: 1; 
- padding: 1em; 
-}
 
 .search-container {
  text-align: center;
@@ -132,23 +125,46 @@ h2 {
   align-items: center; 
 }
 
+.task-container {
+  display: flex;
+  flex-wrap: wrap; 
+  margin: 10%;
+  gap: 20%;
+}
+
+.tasks {
+  width: calc(33% - 30px);
+  height: auto; 
+  aspect-ratio: 1 / 1;
+  display: block;
+
+  font-family: "Bradley Hand", cursive;
+  box-sizing: border-box; 
+  background-color: lightblue; 
+  margin-bottom: 30px;
+  padding:1em;
+  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+}
+
+.tasks:hover  {
+  transform: scale(1.1);
+  box-shadow:10px 10px 7px rgba(0,0,0,.7);
+}
+
 .delete-task{
   font-size: 1.5em;
   margin: 15px;
   line-height: 2;
+  font-family: "Comic Sans MS", Comic Sans, cursive;
 }
 
 
 .button-group {
   display: inline-block;
-  
-  
+  margin: 2em;
+  text-align: center;
 }
 
-.li{
-  list-style-type: circle;
-  
-}
 
 .sort{
   display: flex;
@@ -158,6 +174,7 @@ h2 {
 .dates{
   color: red;
   margin: 5px;
+  text-align: center;
 }
 
 .task-checkbox {
@@ -170,3 +187,4 @@ h2 {
 .completed {
   text-decoration: line-through;
 }
+

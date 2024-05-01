@@ -96,7 +96,7 @@ def home():
 
 
 #Add A Task
-@app.route('/add')
+@app.route('/add') 
 def add():
     return render_template('add.html')
 
