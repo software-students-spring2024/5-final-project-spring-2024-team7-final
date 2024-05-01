@@ -107,5 +107,3 @@ def test_register_existing_user(client, mocker):
 #     response = client.post(f'/delete/{logged_in_user.id}/{task_id}')
 #     assert response.status_code == 302
 #     assert '/home' in response.headers['Location']
-
-
