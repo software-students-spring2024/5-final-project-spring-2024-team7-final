@@ -82,7 +82,7 @@ def home():
     user = db.users.find_one({'_id': user_id})
     tasks = user['tasks']
     for task in tasks:
-        task['date'] = datetime.strptime(task['date'], '%Y-%m-%d')
+        task['date'] = datetime.strptime(task['date'], '%m/%d/%Y')
     
     current_date = datetime.now()
     if request.method == 'GET':
