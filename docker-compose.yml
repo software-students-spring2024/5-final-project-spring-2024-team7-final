@@ -6,7 +6,7 @@ services:
     ports:
       - "3000:3000"  
     environment:
-     - MONGO_URI="mongodb://localhost:27017"
+     - MONGO_URI="mongodb://host.docker.internal:27017"
      - MONGO_DBNAME=user
      - SECRET_KEY="mysecretkey"
 
