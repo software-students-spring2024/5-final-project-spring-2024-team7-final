@@ -107,3 +107,54 @@ def test_register_existing_user(client, mocker):
 #     response = client.post(f'/delete/{logged_in_user.id}/{task_id}')
 #     assert response.status_code == 302
 #     assert '/home' in response.headers['Location']
+
+
+#import pytest
+#import os
+#@pytest.fixture
+
+#def client():
+    #app.config.update({
+        #"TESTING" : True,
+    #})
+    #with app.test_client() as client:
+        #yield client
+#def test_sanity_check(client):
+
+    #expected = True
+    #actual = True
+    #assert actual == expected, "Expected True to be equal to True!"
+
+#def test_sanity_check2(client):
+    #expected = True
+    #actual = True
+    #assert actual == expected, "Expected True to be equal to True!"
+#def test_home_page(client):
+    #response = client.get("/")
+    #assert response.status_code == 200
+    #assert b"Welcome to Melody Note Finder" in response.data
+#def test_addtask_page(client):
+    #response = client.get("/submit")
+    #assert response.status_code == 200
+    #assert b"Add Task" in response.data
+#def test_login_page(client):
+    #response = client.get("/view")
+   # assert response.status_code == 200
+    #assert b"Login" in response.data
+#def test_running_in_docker(client):
+    #assert os.path.exists('/.dockerenv') == False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
