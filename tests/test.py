@@ -82,7 +82,7 @@ def test_add_task(client):
         "_id":ObjectId(),
         "title":"Title",
         "course":"Course",
-        "date":"01/01/2024"                    
+        "date":"2024-01-01"                    
     })
     assert response.status_code == 302
 
@@ -117,13 +117,13 @@ def test_edit_task_page(client):
         "_id":ObjectId(),
         "title":"Title",
         "course":"Course",
-        "date":"01/01/2024"
+        "date":"2024-01-01"
     })
     tasks = user['tasks']
     print(user_id)
     task_id = tasks[0]["_id"]
     print(task_id)
-    response = client.get('/edit/663195631e4255a470b9763e/663195641e4255a470b97640')
+    response = client.get('/edit/6631d62dabefdc3dc9d3d2cb/6631d62dabefdc3dc9d3d2cd')
     assert response.status_code == 200
     assert b"Edit Task" in response.data
 
@@ -139,10 +139,10 @@ def test_edit_task(client):
         "_id":ObjectId(),
         "title":"Title",
         "course":"Course",
-        "date":"01/01/2024"
+        "date":"2024-01-01"
     })
     tasks = user['tasks']
-    response = client.post('/edit/663195631e4255a470b9763e/663195641e4255a470b97640', data={
+    response = client.post('/edit/6631d62dabefdc3dc9d3d2cb/6631d62dabefdc3dc9d3d2cd', data={
         "title":tasks[0]['title'],
         "course":tasks[0]['course'],
         "date":tasks[0]['date']
@@ -161,13 +161,13 @@ def test_delete_task_page(client):
         "_id":ObjectId(),
         "title":"Title",
         "course":"Course",
-        "date":"01/01/2024"
+        "date":"2024-01-01"
     })
     tasks = user['tasks']
-    # print(user_id)
+    print(user_id)
     task_id = tasks[0]["_id"]
-    # print(task_id)
-    response = client.get('/delete/663195631e4255a470b9763e/663195641e4255a470b97640')
+    print(task_id)
+    response = client.get('/delete/6631d62dabefdc3dc9d3d2cb/6631d62dabefdc3dc9d3d2cd')
     assert response.status_code == 200
     assert b"Delete Task" in response.data
 
@@ -183,10 +183,10 @@ def test_delete_task(client):
         "_id":ObjectId(),
         "title":"Title",
         "course":"Course",
-        "date":"01/01/2024"
+        "date":"2024-01-01"
     })
     tasks = user['tasks']
-    response = client.post('/delete/663195631e4255a470b9763e/663195641e4255a470b97640', data={
+    response = client.post('/delete/6631d62dabefdc3dc9d3d2cb/6631d62dabefdc3dc9d3d2cd', data={
         "title":tasks[0]['title'],
         "course":tasks[0]['course'],
         "date":tasks[0]['date']
