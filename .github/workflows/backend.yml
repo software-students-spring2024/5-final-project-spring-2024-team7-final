@@ -27,6 +27,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Run pytest
+      run: |
+        pip install pytest
+        pytest tests/
+
     - name: Check if Flask app runs
       run: |
         python app.py &
@@ -44,3 +49,14 @@ jobs:
 
     - name: Push Docker image to Docker Hub
       run: docker push zijiezhao/project5:latest
+
+    - name: Deploy to DigitalOcean
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: 'root'
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /root
+          /usr/local/bin/docker-compose pull
+          /usr/local/bin/docker-compose up -d --force-recreate
