@@ -10,6 +10,7 @@ python-dotenv = "*"
 flask-login = "*"
 pytest = "*"
 mongomock = "*"
+pytest-mock = "*"
 
 [dev-packages]
 
