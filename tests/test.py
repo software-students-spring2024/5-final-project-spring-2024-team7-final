@@ -171,3 +171,24 @@ def test_delete_task_page(client):
     assert response.status_code == 200
     assert b"Delete Task" in response.data
 
+def test_delete_task(client):
+
+    auth = client.post("/login", data={
+    "username":"hello",
+    "password":"123",
+    })
+    user_id = ObjectId(current_user.id)
+    user = db.users.find_one({'_id': user_id})
+    add = client.post("/add", data={
+        "_id":ObjectId(),
+        "title":"Title",
+        "course":"Course",
+        "date":"01/01/2024"
+    })
+    tasks = user['tasks']
+    response = client.post('/delete/663195631e4255a470b9763e/663195641e4255a470b97640', data={
+        "title":tasks[0]['title'],
+        "course":tasks[0]['course'],
+        "date":tasks[0]['date']
+    })
+    assert response.status_code == 302
