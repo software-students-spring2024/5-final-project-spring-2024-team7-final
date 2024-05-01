@@ -91,3 +91,16 @@ def test_search_page(client):
     response = client.get("/search")
     assert response.status_code == 200
     assert b"Search Tasks" in response.data
+
+def test_search_for_task(client):
+
+    auth = client.post("/login", data={
+    "username":"hello",
+    "password":"123",
+    })
+    response = client.post("/search", data={
+        "_id":ObjectId(),
+        "course":"Course",                   
+    })
+    assert response.status_code == 200
+    assert b"Tasks for" in response.data
