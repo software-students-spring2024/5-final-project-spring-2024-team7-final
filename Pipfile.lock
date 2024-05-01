@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d34ff259fd7f0959868138f3f3a3be01531577d0f482e6bb448de9e5a6df48b8"
+            "sha256": "8afdf09a07d5cf7a3a566d55146502e8a2eefe58bf7714490c4647b195d72fb6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -156,6 +156,14 @@
             "markers": "python_version >= '3.7'",
             "version": "==2.1.5"
         },
+        "mongomock": {
+            "hashes": [
+                "sha256:08a24938a05c80c69b6b8b19a09888d38d8c6e7328547f94d46cadb7f47209f2",
+                "sha256:f06cd62afb8ae3ef63ba31349abd220a657ef0dd4f0243a29587c5213f931b7d"
+            ],
+            "index": "pypi",
+            "version": "==4.1.2"
+        },
         "packaging": {
             "hashes": [
                 "sha256:2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5",
@@ -256,6 +264,12 @@
             "index": "pypi",
             "markers": "python_version >= '3.7'",
             "version": "==0.21.1"
+        },
+        "sentinels": {
+            "hashes": [
+                "sha256:7be0704d7fe1925e397e92d18669ace2f619c92b5d4eb21a89f31e026f9ff4b1"
+            ],
+            "version": "==1.0.0"
         },
         "tomli": {
             "hashes": [

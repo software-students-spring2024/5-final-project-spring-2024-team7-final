@@ -3,3 +3,4 @@ pymongo==4.7.0
 python-dotenv==0.21.1
 Flask-Login==0.6.3
 pytest==7.4.4
+mongomock==4.1.2
